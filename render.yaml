@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: tennis-court-booking
+    runtime: node
+    plan: free
+    region: oregon
+    branch: main
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      # Set in the Render dashboard (Neon connection string). Not stored
+      # in this file since it's a secret.
+      - key: DATABASE_URL
+        sync: false
+      - key: BETTER_AUTH_SECRET
+        generateValue: true
+      # Set this to the service's public URL (Render → service → Settings
+      # shows it, e.g. https://tennis-court-booking-xxxx.onrender.com).
+      - key: BETTER_AUTH_URL
+        sync: false

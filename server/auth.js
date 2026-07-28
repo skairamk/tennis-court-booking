@@ -10,11 +10,13 @@ const port = process.env.PORT || 3001
 // browser's Origin header still says :5173. In production there's only
 // one origin (this same process serves everything), so this list is
 // only load-bearing during local dev.
+const baseURL = process.env.BETTER_AUTH_URL || `http://localhost:${port}`
+
 export const auth = betterAuth({
   database: pool,
-  baseURL: process.env.BETTER_AUTH_URL || `http://localhost:${port}`,
+  baseURL,
   secret: process.env.BETTER_AUTH_SECRET,
-  trustedOrigins: ['http://localhost:5173', `http://localhost:${port}`],
+  trustedOrigins: ['http://localhost:5173', `http://localhost:${port}`, baseURL],
   emailAndPassword: {
     enabled: true,
   },
