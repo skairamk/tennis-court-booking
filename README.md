@@ -1,11 +1,35 @@
 # CourtSide — Tennis Court Booking
 
+**Live:** https://tennis-court-booking-8ix1.onrender.com
+
 A React + Vite frontend and an Express + Postgres (Neon) backend, with
 account auth via [Better Auth](https://www.better-auth.com). Built so the
 whole thing ships as **one deployable artifact**: in production, a single
 Express process serves the REST API, the auth endpoints, and the built
 frontend static files. There's no separate frontend server to run or
 deploy.
+
+## Deployment (Render)
+
+Deployed as a single Render **web service** (see `render.yaml`):
+
+- Build: `npm install && npm run build`
+- Start: `npm start`
+- Health check: `/api/health`
+- Env vars set on Render: `DATABASE_URL` (same Neon DB used locally),
+  `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL` (the service's own
+  `https://tennis-court-booking-8ix1.onrender.com` URL).
+
+Render's GitHub App isn't installed on this repo, so pushes to `main`
+**do not auto-deploy** — trigger a redeploy manually from the Render
+dashboard (or `POST /v1/services/:id/deploys` via the Render API) after
+pushing. Database migrations (`npm run migrate`) also aren't run as part
+of the build; run them locally against the same `DATABASE_URL` when the
+schema changes.
+
+On Render's free plan the service spins down after periods of inactivity,
+so the first request after idling will be slow (cold start) while it
+spins back up.
 
 ## Prerequisites
 
